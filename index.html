@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 WinstreakPol - Professional Polygon Lottery</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.0/dist/web3.min.js"></script>
+</head>
+<body>
+    <!-- Preloader -->
+    <div id="preloader" class="preloader">
+        <div class="preloader-content">
+            <div class="lottery-spinner">
+                <div class="spinner-wheel"></div>
+                <div class="spinner-ball"></div>
+            </div>
+            <h2>WinstreakPol</h2>
+            <div class="slogan-container">
+                <p class="slogan-text" id="slogan-text">جایی که برنده شدن به عادت تبدیل می‌شود</p>
+                <p class="slogan-text-en">Where winning becomes a habit</p>
+            </div>
+            <p id="preloader-text">در حال بارگذاری...</p>
+        </div>
+    </div>
+
+    <!-- Background Animation -->
+    <div class="background-animation">
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
+            <div class="shape shape-5"></div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">
+                        <i class="fas fa-trophy"></i>
+                        <span id="logo-text">WinstreakPol</span>
+                    </div>
+                    <div class="network-badge">
+                        <i class="fas fa-network-wired"></i>
+                        <span id="network-text">Polygon</span>
+                    </div>
+                </div>
+                
+                <div class="header-actions">
+                    <div class="language-selector">
+                        <select id="languageSelect">
+                            <option value="fa">فارسی</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+                    
+                    <div id="walletInfo" class="wallet-info" style="display: none;">
+                        <i class="fas fa-wallet"></i>
+                        <span id="walletAddress"></span>
+                        <div class="wallet-balance">
+                            <span id="maticBalance">0 MATIC</span>
+                        </div>
+                    </div>
+                    <button id="connectWallet" class="connect-btn">
+                        <i class="fas fa-plug"></i>
+                        <span id="connect-text">اتصال ولت</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Header Slogan -->
+            <div class="header-slogan" id="headerSlogan" style="display: none;">
+                <div class="header-slogan-text" id="header-slogan-text">جایی که برنده شدن به عادت تبدیل می‌شود</div>
+                <div class="header-slogan-text-en">Where winning becomes a habit</div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="tabs-navigation">
+            <div class="tabs-container">
+                <button class="tab-btn active" data-tab="dashboard">
+                    <i class="fas fa-home"></i>
+                    <span id="tab-dashboard">داشبورد</span>
+                </button>
+                <button class="tab-btn" data-tab="lottery">
+                    <i class="fas fa-ticket-alt"></i>
+                    <span id="tab-lottery">خرید بلیط</span>
+                </button>
+                <button class="tab-btn" data-tab="winners">
+                    <i class="fas fa-trophy"></i>
+                    <span id="tab-winners">برندگان</span>
+                </button>
+                <button class="tab-btn" data-tab="ptoken">
+                    <i class="fas fa-coins"></i>
+                    <span id="tab-ptoken">تبدیل P-Token</span>
+                </button>
+                <button class="tab-btn" data-tab="profile">
+                    <i class="fas fa-user"></i>
+                    <span id="tab-profile">پروفایل من</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-content active">
+                <div class="tab-header">
+                    <h1><i class="fas fa-home"></i> <span id="dashboard-title">داشبورد لاتاری</span></h1>
+                    <p id="dashboard-subtitle">وضعیت زنده استخرهای لاتاری</p>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="quick-stats">
+                    <div class="stat-card gradient-1">
+                        <div class="stat-icon">
+                            <i class="fas fa-ticket-alt"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="stat-ticket-price">قیمت بلیط</h3>
+                            <div id="ticketPrice" class="stat-value">0 MATIC</div>
+                        </div>
+                    </div>
+                    <div class="stat-card gradient-2">
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="stat-total-tickets">بلیط‌های فروخته شده</h3>
+                            <div id="totalTickets" class="stat-value">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card gradient-3">
+                        <div class="stat-icon">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="stat-total-prizes">جوایز توزیع شده</h3>
+                            <div id="totalPrizes" class="stat-value">0 MATIC</div>
+                        </div>
+                    </div>
+                    <div class="stat-card gradient-4">
+                        <div class="stat-icon">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="stat-contract-balance">موجودی قرارداد</h3>
+                            <div id="contractBalance" class="stat-value">0 MATIC</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lottery Pools -->
+                <div class="pools-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-chess-queen"></i>
+                        <span id="pools-title">استخرهای لاتاری</span>
+                    </h2>
+                    <div class="pools-grid">
+                        <!-- Pool 1 - Silver -->
+                        <div class="pool-card pool-silver">
+                            <div class="pool-header">
+                                <div class="pool-badge">🥈 <span id="pool1-badge">استخر نقره</span></div>
+                                <h3 id="pool1-title">استخر ۱</h3>
+                            </div>
+                            <div class="pool-body">
+                                <div class="pool-stats">
+                                    <div class="stat">
+                                        <i class="fas fa-users"></i>
+                                        <span id="pool1-participants">۱۲۵ شرکت‌کننده</span>
+                                    </div>
+                                    <div class="stat">
+                                        <i class="fas fa-trophy"></i>
+                                        <span id="pool1-winners">۱ برنده - ۱۰۰% جایزه</span>
+                                    </div>
+                                </div>
+                                <div class="pool-progress">
+                                    <div class="progress-info">
+                                        <span id="pool1-progress-text">پیشرفت:</span>
+                                        <span id="pool1Tickets">0/125</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div id="pool1Progress" class="progress-fill" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                <div class="pool-prize">
+                                    <i class="fas fa-gem"></i>
+                                    <span id="pool1Prize">0 MATIC</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pool 2 - Gold -->
+                        <div class="pool-card pool-gold">
+                            <div class="pool-header">
+                                <div class="pool-badge">🥇 <span id="pool2-badge">استخر طلا</span></div>
+                                <h3 id="pool2-title">استخر ۲</h3>
+                            </div>
+                            <div class="pool-body">
+                                <div class="pool-stats">
+                                    <div class="stat">
+                                        <i class="fas fa-users"></i>
+                                        <span id="pool2-participants">۵۰۰ شرکت‌کننده</span>
+                                    </div>
+                                    <div class="stat">
+                                        <i class="fas fa-trophy"></i>
+                                        <span id="pool2-winners">۲ برنده - ۸۰% / ۲۰%</span>
+                                    </div>
+                                </div>
+                                <div class="pool-progress">
+                                    <div class="progress-info">
+                                        <span id="pool2-progress-text">پیشرفت:</span>
+                                        <span id="pool2Tickets">0/500</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div id="pool2Progress" class="progress-fill" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                <div class="pool-prize">
+                                    <i class="fas fa-gem"></i>
+                                    <span id="pool2Prize">0 MATIC</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pool 3 - Diamond -->
+                        <div class="pool-card pool-diamond">
+                            <div class="pool-header">
+                                <div class="pool-badge">💎 <span id="pool3-badge">استخر الماس</span></div>
+                                <h3 id="pool3-title">استخر ۳</h3>
+                            </div>
+                            <div class="pool-body">
+                                <div class="pool-stats">
+                                    <div class="stat">
+                                        <i class="fas fa-users"></i>
+                                        <span id="pool3-participants">۲۵۰۰ شرکت‌کننده</span>
+                                    </div>
+                                    <div class="stat">
+                                        <i class="fas fa-trophy"></i>
+                                        <span id="pool3-winners">۳ برنده - ۷۰% / ۲۰% / ۱۰%</span>
+                                    </div>
+                                </div>
+                                <div class="pool-progress">
+                                    <div class="progress-info">
+                                        <span id="pool3-progress-text">پیشرفت:</span>
+                                        <span id="pool3Tickets">0/2500</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div id="pool3Progress" class="progress-fill" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                <div class="pool-prize">
+                                    <i class="fas fa-gem"></i>
+                                    <span id="pool3Prize">0 MATIC</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lottery Tab -->
+            <div id="lottery" class="tab-content">
+                <div class="tab-header">
+                    <h1><i class="fas fa-ticket-alt"></i> <span id="lottery-title">خرید بلیط لاتاری</span></h1>
+                    <p id="lottery-subtitle">شانس خود را برای برنده شدن امتحان کنید</p>
+                </div>
+
+                <div class="lottery-content">
+                    <div class="ticket-purchase-card">
+                        <div class="ticket-header">
+                            <i class="fas fa-crown"></i>
+                            <h2 id="ticket-purchase-title">خرید بلیط لاتاری</h2>
+                        </div>
+                        
+                        <div class="ticket-form">
+                            <div class="form-group">
+                                <label for="ticketCount">
+                                    <i class="fas fa-ticket-alt"></i>
+                                    <span id="ticket-count-label">تعداد بلیط</span>
+                                </label>
+                                <div class="input-with-buttons">
+                                    <button class="quantity-btn" onclick="changeTicketCount(-1)">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <input type="number" id="ticketCount" min="1" value="1" class="ticket-input">
+                                    <button class="quantity-btn" onclick="changeTicketCount(1)">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="form-hint">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span id="ticket-max-hint">حداکثر ۱۰۰۰ بلیط در هر تراکنش</span>
+                                </div>
+                            </div>
+
+                            <div class="price-summary">
+                                <div class="price-item">
+                                    <span id="price-per-ticket">قیمت هر بلیط:</span>
+                                    <span id="currentTicketPrice">0 MATIC</span>
+                                </div>
+                                <div class="price-item total">
+                                    <span id="total-cost">هزینه کل:</span>
+                                    <span id="totalPrice" class="total-price">0 MATIC</span>
+                                </div>
+                            </div>
+
+                            <button id="buyTickets" class="purchase-btn" disabled>
+                                <i class="fas fa-shopping-cart"></i>
+                                <span id="buy-tickets-text">خرید بلیط</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="ticket-info-card">
+                        <h3><i class="fas fa-info-circle"></i> <span id="ticket-info-title">اطلاعات بلیط‌ها</span></h3>
+                        <div class="user-tickets-info">
+                            <div class="ticket-stats">
+                                <div class="ticket-stat">
+                                    <i class="fas fa-ticket-alt pool-1"></i>
+                                    <div>
+                                        <div id="user-pool1-label" class="stat-label">استخر نقره</div>
+                                        <div id="userPool1Tickets" class="stat-value">0 بلیط</div>
+                                    </div>
+                                </div>
+                                <div class="ticket-stat">
+                                    <i class="fas fa-ticket-alt pool-2"></i>
+                                    <div>
+                                        <div id="user-pool2-label" class="stat-label">استخر طلا</div>
+                                        <div id="userPool2Tickets" class="stat-value">0 بلیط</div>
+                                    </div>
+                                </div>
+                                <div class="ticket-stat">
+                                    <i class="fas fa-ticket-alt pool-3"></i>
+                                    <div>
+                                        <div id="user-pool3-label" class="stat-label">استخر الماس</div>
+                                        <div id="userPool3Tickets" class="stat-value">0 بلیط</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Winners Tab -->
+            <div id="winners" class="tab-content">
+                <div class="tab-header">
+                    <h1><i class="fas fa-trophy"></i> <span id="winners-title">گردونه برندگان</span></h1>
+                    <p id="winners-subtitle">برندگان خوش‌شانس لاتاری</p>
+                </div>
+
+                <div class="winners-content">
+                    <!-- Wheel Section -->
+                    <div class="wheel-section">
+                        <div class="wheel-container">
+                            <div class="wheel" id="wheel">
+                                <div class="wheel-inner">
+                                    <div class="wheel-center">
+                                        <i class="fas fa-gem"></i>
+                                    </div>
+                                    <div class="wheel-segment"></div>
+                                    <div class="wheel-segment"></div>
+                                    <div class="wheel-segment"></div>
+                                    <div class="wheel-segment"></div>
+                                    <div class="wheel-segment"></div>
+                                    <div class="wheel-segment"></div>
+                                    <div class="wheel-segment"></div>
+                                    <div class="wheel-segment"></div>
+                                </div>
+                            </div>
+                            <div class="wheel-pointer">
+                                <i class="fas fa-caret-down"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="wheel-controls">
+                            <button id="spinWheel" class="spin-btn">
+                                <i class="fas fa-play"></i>
+                                <span id="spin-wheel-text">چرخاندن گردونه</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Winners List -->
+                    <div class="winners-list-section">
+                        <h3><i class="fas fa-list"></i> <span id="recent-winners-title">برندگان اخیر</span></h3>
+                        <div id="recentWinners" class="winners-list">
+                            <!-- Winners will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- P-Token Tab -->
+            <div id="ptoken" class="tab-content">
+                <div class="tab-header">
+                    <h1><i class="fas fa-coins"></i> <span id="ptoken-title">تبدیل P-Token</span></h1>
+                    <p id="ptoken-subtitle">تبدیل توکن‌های P-Token به MATIC</p>
+                </div>
+
+                <div class="ptoken-content">
+                    <div class="ptoken-info-card">
+                        <h3><i class="fas fa-chart-line"></i> <span id="ptoken-info-title">اطلاعات P-Token</span></h3>
+                        <div class="ptoken-stats">
+                            <div class="ptoken-stat">
+                                <i class="fas fa-wallet"></i>
+                                <div>
+                                    <div id="ptoken-balance-label" class="stat-label">موجودی P-Token شما</div>
+                                    <div id="userPTokenBalance" class="stat-value">0 P-Token</div>
+                                </div>
+                            </div>
+                            <div class="ptoken-stat">
+                                <i class="fas fa-dollar-sign"></i>
+                                <div>
+                                    <div id="ptoken-price-label" class="stat-label">قیمت فعلی هر P-Token</div>
+                                    <div id="ptokenPrice" class="stat-value">0 MATIC</div>
+                                </div>
+                            </div>
+                            <div class="ptoken-stat">
+                                <i class="fas fa-calculator"></i>
+                                <div>
+                                    <div id="ptoken-value-label" class="stat-label">ارزش کل P-Token شما</div>
+                                    <div id="totalPTokenValue" class="stat-value">0 MATIC</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ptoken-convert-card">
+                        <h3><i class="fas fa-exchange-alt"></i> <span id="convert-title">تبدیل به MATIC</span></h3>
+                        <div class="convert-form">
+                            <div class="form-group">
+                                <label for="ptokenAmount">
+                                    <i class="fas fa-coins"></i>
+                                    <span id="ptoken-amount-label">تعداد P-Token برای فروش</span>
+                                </label>
+                                <div class="input-with-buttons">
+                                    <button class="quantity-btn" onclick="changePTokenAmount(-1)">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <input type="number" id="ptokenAmount" min="1" value="1" class="ptoken-input">
+                                    <button class="quantity-btn" onclick="changePTokenAmount(1)">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="form-hint">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span id="ptoken-max-hint">حداکثر موجودی شما: <span id="maxPTokenAmount">0</span> P-Token</span>
+                                </div>
+                            </div>
+
+                            <div class="conversion-summary">
+                                <div class="conversion-item">
+                                    <span id="conversion-amount-label">تعداد P-Token:</span>
+                                    <span id="conversionPToken">0</span>
+                                </div>
+                                <div class="conversion-item">
+                                    <span id="conversion-price-label">قیمت هر توکن:</span>
+                                    <span id="conversionPrice">0 MATIC</span>
+                                </div>
+                                <div class="conversion-item total">
+                                    <span id="conversion-total-label">دریافتی شما:</span>
+                                    <span id="conversionTotal" class="total-price">0 MATIC</span>
+                                </div>
+                            </div>
+
+                            <button id="sellPTokens" class="convert-btn" disabled>
+                                <i class="fas fa-exchange-alt"></i>
+                                <span id="sell-ptoken-text">فروش P-Token و دریافت MATIC</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Tab -->
+            <div id="profile" class="tab-content">
+                <div class="tab-header">
+                    <h1><i class="fas fa-user"></i> <span id="profile-title">پروفایل من</span></h1>
+                    <p id="profile-subtitle">اطلاعات و آمار شخصی شما</p>
+                </div>
+
+                <div class="profile-content">
+                    <div class="profile-card">
+                        <div class="profile-header">
+                            <div class="profile-avatar">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div class="profile-info">
+                                <h3 id="profileAddress">ولت متصل نشده</h3>
+                                <p id="profile-network">شبکه: Polygon Mainnet</p>
+                            </div>
+                        </div>
+
+                        <div class="profile-stats">
+                            <div class="profile-stat">
+                                <div class="stat-icon">
+                                    <i class="fas fa-ticket-alt"></i>
+                                </div>
+                                <div class="stat-details">
+                                    <span id="profile-total-tickets" class="stat-label">کل بلیط‌ها</span>
+                                    <span id="profileTotalTickets" class="stat-value">0</span>
+                                </div>
+                            </div>
+                            <div class="profile-stat">
+                                <div class="stat-icon">
+                                    <i class="fas fa-chess-board"></i>
+                                </div>
+                                <div class="stat-details">
+                                    <span id="profile-rounds" class="stat-label">راندهای شرکت کرده</span>
+                                    <span id="profileRounds" class="stat-value">0</span>
+                                </div>
+                            </div>
+                            <div class="profile-stat">
+                                <div class="stat-icon">
+                                    <i class="fas fa-trophy"></i>
+                                </div>
+                                <div class="stat-details">
+                                    <span id="profile-wins" class="stat-label">بردها</span>
+                                    <span id="profileWins" class="stat-value">0</span>
+                                </div>
+                            </div>
+                            <div class="profile-stat">
+                                <div class="stat-icon">
+                                    <i class="fas fa-gem"></i>
+                                </div>
+                                <div class="stat-details">
+                                    <span id="profile-total-prize" class="stat-label">جایزه کل</span>
+                                    <span id="profileTotalPrize" class="stat-value">0 MATIC</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="winning-chance-card">
+                        <h3><i class="fas fa-chart-pie"></i> <span id="winning-chance-title">شانس برنده شدن</span></h3>
+                        <div class="chance-circles">
+                            <div class="chance-circle">
+                                <div class="circle-progress" id="chanceCircle1" data-percent="0">
+                                    <span class="circle-value">0%</span>
+                                </div>
+                                <span id="chance-pool1-label" class="circle-label">استخر نقره</span>
+                            </div>
+                            <div class="chance-circle">
+                                <div class="circle-progress" id="chanceCircle2" data-percent="0">
+                                    <span class="circle-value">0%</span>
+                                </div>
+                                <span id="chance-pool2-label" class="circle-label">استخر طلا</span>
+                            </div>
+                            <div class="chance-circle">
+                                <div class="circle-progress" id="chanceCircle3" data-percent="0">
+                                    <span class="circle-value">0%</span>
+                                </div>
+                                <span id="chance-pool3-label" class="circle-label">استخر الماس</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Wallet Selection Modal -->
+    <div id="walletModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="wallet-modal-title">انتخاب کیف پول</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="wallet-options">
+                    <div class="wallet-option" data-wallet="metamask">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Fox.svg" alt="MetaMask">
+                        <span>MetaMask</span>
+                    </div>
+                    <div class="wallet-option" data-wallet="trustwallet">
+                        <img src="https://trustwallet.com/assets/images/media/assets/TWT.png" alt="Trust Wallet">
+                        <span>Trust Wallet</span>
+                    </div>
+                    <div class="wallet-option" data-wallet="walletconnect">
+                        <img src="https://walletconnect.org/_next/static/media/logo_mark.84dd8525.svg" alt="WalletConnect">
+                        <span>WalletConnect</span>
+                    </div>
+                    <div class="wallet-option" data-wallet="coinbase">
+                        <img src="https://cdn.iconscout.com/icon/free/png-256/coinbase-4-1174883.png" alt="Coinbase Wallet">
+                        <span>Coinbase Wallet</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Transaction Status Modal -->
+    <div id="transactionModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="transaction-modal-title">وضعیت تراکنش</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="transaction-status">
+                    <div class="status-icon">
+                        <i class="fas fa-sync-alt fa-spin"></i>
+                    </div>
+                    <h3 id="transaction-status-text">در حال پردازش...</h3>
+                    <p id="transaction-details">تراکنش در حال تایید در بلاک چین است</p>
+                    <div class="transaction-hash">
+                        <span id="tx-hash-label">هش تراکنش:</span>
+                        <span id="tx-hash" class="hash-value">0x...</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="transaction-progress"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications Container -->
+    <div id="notifications" class="notifications-container"></div>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+</body>
+</html>
